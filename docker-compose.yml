@@ -1,0 +1,12 @@
+services:
+  wiki:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+    command: python3 -m http.server 8000 --directory wiki
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
