@@ -1,0 +1,49 @@
+{
+  "name": "Software AI Engineering",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "charliermarsh.ruff",
+        "ms-vscode.cpptools",
+        "twxs.cmake",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "mtxr.sqltools",
+        "ms-toolsai.jupyter",
+        "github.copilot",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[cpp]": {
+          "editor.defaultFormatter": "ms-vscode.cpptools"
+        }
+      }
+    }
+  },
+  "remoteUser": "devuser",
+  "postCreateCommand": "echo 'Container ready. Python: $(python3 --version), Node: $(node --version), GCC: $(gcc --version | head -1)'"
+}

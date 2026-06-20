@@ -1,0 +1,54 @@
+# Git
+.git/
+.gitignore
+
+# CI/CD & config
+.github/
+.agents/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+*.egg-info/
+dist/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# C/C++ build artifacts
+*.o
+*.a
+*.so
+*.out
+CMakeFiles/
+CMakeCache.txt
+
+# SQL / DB
+*.sqlite
+*.sqlite3
+*.db
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# Logs
+logs/
+*.log
+
+# Docs & misc
+*.md
+wiki/

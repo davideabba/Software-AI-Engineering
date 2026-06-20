@@ -1,0 +1,70 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.env
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+*.ipynb_checkpoints/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+dist/
+
+# C/C++
+*.o
+*.a
+*.so
+*.out
+*.exe
+*.dll
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# SQL / DB
+*.sqlite
+*.sqlite3
+*.db
+
+# Secrets & config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# Logs
+logs/
+*.log
+
+# Docker
+.docker/
