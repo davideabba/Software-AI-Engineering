@@ -1,0 +1,37 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "duckduckgo": {
+      "type": "local",
+      "command": ["docker", "run", "--rm", "-i", "ghcr.io/nickclyde/duckduckgo-mcp-server:0"],
+      "enabled": true
+    }
+  },
+  "agent": {
+    "build": {
+      "tools": {
+        "duckduckgo_*": true
+      }
+    },
+    "plan": {
+      "tools": {
+        "duckduckgo_*": true
+      }
+    },
+    "general": {
+      "tools": {
+        "duckduckgo_*": true
+      }
+    },
+    "explore": {
+      "tools": {
+        "duckduckgo_*": true
+      }
+    },
+    "scout": {
+      "tools": {
+        "duckduckgo_*": true
+      }
+    }
+  }
+}
