@@ -1,6 +1,9 @@
 FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG USERNAME=devuser
+ARG USER_UID=1000
+ARG USER_GID=1000
 
 # Core tools + build essentials
 RUN apt-get update && apt-get install -y \
@@ -18,9 +21,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# Python: upgrade pip and install common data/AI libs
-RUN python3 -m pip install --upgrade pip --break-system-packages \
-    && pip install --break-system-packages \
+# Python: install common data/AI libs
+RUN python3 -m pip install --break-system-packages \
         ipython jupyter \
         numpy pandas polars \
         scikit-learn matplotlib seaborn plotly \
@@ -28,10 +30,21 @@ RUN python3 -m pip install --upgrade pip --break-system-packages \
         requests httpx pydantic \
         pytest ruff black
 
-# Create non-root user
-RUN useradd -ms /bin/bash devuser \
-    && mkdir -p /home/devuser/.vscode-server/extensions
-USER devuser
+# Create non-root user (handle pre-existing UID/GID on base image)
+RUN if getent group "$USER_GID" >/dev/null; then \
+        true; \
+    else \
+        groupadd --gid "$USER_GID" "$USERNAME"; \
+    fi \
+    && if ! id -u "$USERNAME" >/dev/null 2>&1; then \
+        if getent passwd "$USER_UID" >/dev/null; then \
+            useradd --gid "$USER_GID" -m -s /bin/bash "$USERNAME"; \
+        else \
+            useradd --uid "$USER_UID" --gid "$USER_GID" -m -s /bin/bash "$USERNAME"; \
+        fi; \
+    fi \
+    && mkdir -p "/home/$USERNAME/.vscode-server/extensions"
+USER $USERNAME
 WORKDIR /workspace
 
 CMD ["/bin/bash"]

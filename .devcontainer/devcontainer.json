@@ -44,6 +44,6 @@
       }
     }
   },
-  "remoteUser": "devuser",
+  "remoteUser": "dev",
   "postCreateCommand": "echo 'Container ready. Python: $(python3 --version), Node: $(node --version), GCC: $(gcc --version | head -1)'"
 }

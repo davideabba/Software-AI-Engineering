@@ -24,7 +24,7 @@ Retrieval-Augmented Generation paradigms, optimization techniques, evaluation, a
 | [RAG Paradigms](rag/rag-paradigms.md) | Naive, Advanced, and Modular RAG plus iterative/recursive/adaptive augmentation modes. | 2026-06-20 |
 | [RAG Retrieval Optimization](rag/rag-retrieval-optimization.md) | Chunking, metadata, query expansion/transformation, routing, re-ranking, augmentation loops. | 2026-06-20 |
 | [RAG Evaluation](rag/rag-evaluation.md) | Retrieval and generation metrics, qualitative aspects, benchmarks and judge frameworks. | 2026-06-20 |
-| [IVFFlat Vector Indexes](rag/ivfflat-vector-indexes.md) | PgVector's IVFFlat: lists/probes tuning, distance operators, build and query patterns. | 2026-06-20 |
+| [IVFFlat Vector Indexes](rag//ivfflat-vector-indexes.md) | PgVector's IVFFlat: lists/probes tuning, distance operators, build and query patterns. | 2026-06-20 |
 | [Two-Level RAG Customer Support Assistant](rag/two-level-rag-assistant.md) | Master's thesis project: page-level + section-level retrieval on a local stack. | 2026-06-20 |
 
 ## containerization
