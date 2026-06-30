@@ -78,8 +78,8 @@ function normalizeAnchorId(text) {
   return String(text)
     .trim()
     .toLowerCase()
-    .replace(/\s+/g, "_")
-    .replace(/[^\w]/g, "");
+    .replace(/\s+/g, "_") // spazi interni -> underscore
+    .replace(/[^\w]/g, ""); // rimuove tutti i caratteri non-word
 }
 
 /**
@@ -120,16 +120,19 @@ function buildTree(records, warn = console.warn) {
       if (r !== 0) return r;
     }
 
+    // Ordinamento per tipoacc_ordinevisualizzazione (numerico) se presente
     const ord =
       (Number(a.tipoacc_ordinevisualizzazione) || 0) -
       (Number(b.tipoacc_ordinevisualizzazione) || 0);
     if (ord !== 0) return ord;
 
+    // Ordinamento per ANAG_codice2 e ANAG_prtype se presenti
     for (const k of ["ANAG_codice2", "ANAG_prtype"]) {
       const r = strcmp(a[k], b[k]);
       if (r !== 0) return r;
     }
 
+    // Ordinamento per PRE_enddate (data di fine validità) in ordine decrescente
     return (
       new Date(b.PRE_enddate ?? 0).getTime() -
       new Date(a.PRE_enddate ?? 0).getTime()
@@ -157,6 +160,8 @@ function buildTree(records, warn = console.warn) {
     const bom = rec.BOM_modelloanagraficamain;
     const code = rec.ANAG_codice;
 
+    // Costruzione della gerarchia annidata usando Map per ogni livello
+    // Se un livello non esiste, viene creato come nuova Map vuota
     if (!tree.has(cl1)) tree.set(cl1, new Map());
     const m1 = tree.get(cl1);
 
@@ -172,6 +177,7 @@ function buildTree(records, warn = console.warn) {
     if (!m4.has(code)) m4.set(code, new Map());
     const m5 = m4.get(code);
 
+    // Estrazione dei dettagli accessori per il prodotto corrente
     const details = rec.detail || [];
     if (details.length === 0) {
       warn("Tabella di dettaglio accessori vuota.");
@@ -181,6 +187,7 @@ function buildTree(records, warn = console.warn) {
         const code2 = d.ANAG_codice2;
         if (!acc) continue;
 
+        // Ogni accessorio può avere più codici ANAG_codice2 associati
         if (!m5.has(acc)) m5.set(acc, []);
         if (code2) m5.get(acc).push(code2);
       }
@@ -196,7 +203,7 @@ function buildTree(records, warn = console.warn) {
 
 /**
  * Decodifica un PDFString / PDFHexString in stringa JS.
- * @param {*} obj
+ * @param {PDFString|PDFHexString} obj
  * @returns {string|null}
  */
 function decodePdfString(obj) {
@@ -228,6 +235,8 @@ function extractAnchorPages(pdfDoc) {
   const context = pdfDoc.context;
   const pages = pdfDoc.getPages();
 
+  // Scorre tutte le pagine del PDF
+  // e raccoglie le Link annotation con URI "#BMK_<id>"
   pages.forEach((page, pageIndex) => {
     const annotsRaw = page.node.get(PDFName.of("Annots"));
     if (!annotsRaw) return;
@@ -411,6 +420,11 @@ function treeToItems(tree, anchorPages, warn = console.warn) {
 function addOutlines(pdfDoc, items) {
   const { context } = pdfDoc;
 
+  /**
+   * Crea un array PDF per la destinazione di un segnalibro. 
+   * @param {PDFPage} page 
+   * @returns {PDFArray}
+   */
   function dest(page) {
     const arr = PDFArray.withContext(context);
     arr.push(page.ref);
@@ -418,6 +432,12 @@ function addOutlines(pdfDoc, items) {
     return arr;
   }
 
+  /**
+   * Costruisce un livello di segnalibri PDF.
+   * @param {Object[]} nodes - array di nodi {title, page, children}
+   * @param {PDFRef} parentRef - riferimento al nodo padre
+   * @returns {{first: PDFRef, last: PDFRef, count: number}}
+   */
   function buildLevel(nodes, parentRef) {
     if (!nodes.length) return null;
     const refs = nodes.map(() => context.nextRef());

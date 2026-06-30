@@ -1,3 +1,5 @@
+// PDF Bookmarks - Variante che cerca i segnalibri anche nelle pagine di copertina (cover) usando coordinate x,y e tolleranza.
+
 const {
   PDFDocument,
   PDFName,
